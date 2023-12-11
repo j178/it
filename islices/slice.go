@@ -1,6 +1,6 @@
 //go:build goexperiment.rangefunc
 
-package itslices
+package islices
 
 import (
 	"cmp"

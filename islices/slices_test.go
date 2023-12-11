@@ -1,15 +1,17 @@
 //go:build goexperiment.rangefunc
 
-package it
+package islices
 
 import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/j178/it"
 )
 
 func TestCollect(t *testing.T) {
-	r := Range(10)
+	r := it.Range(10)
 	s := Collect(r)
 	assert.Equal(t, []int{0, 1, 2, 3, 4, 5, 6, 7, 8, 9}, s)
 

@@ -1,4 +1,4 @@
-package itmaps
+package imaps
 
 import "iter"
 
