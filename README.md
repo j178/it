@@ -18,3 +18,14 @@ Some code are copied from Russ Cox's proposals [61898](https://github.com/golang
 ```bash
 go get github.com/j178/it
 ```
+
+## Usage
+
+To use this package, you need to install at least Go 1.22(not released yet) and set `GOEXPERIMENT=rangefunc`.
+
+```bash
+go install golang.org/dl/gotip@latest
+gotip download
+
+GOEXPERIMENT=rangefunc gotip run main.go
+```
