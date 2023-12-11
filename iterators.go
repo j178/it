@@ -102,3 +102,21 @@ func Zip[V1, V2 any](x iter.Seq[V1], y iter.Seq[V2]) iter.Seq[Zipped[V1, V2]] {
 		}
 	}
 }
+
+// Limit returns an iterator over seq that stops after n values.
+func Limit[V any](seq iter.Seq[V], n int) iter.Seq[V] {
+	return func(yield func(V) bool) {
+		if n <= 0 {
+			return
+		}
+		for v := range seq {
+			if !yield(v) {
+				return
+			}
+			if n--; n <= 0 {
+				break
+			}
+		}
+		return
+	}
+}
