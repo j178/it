@@ -46,7 +46,7 @@ func Values[Slice ~[]Elem, Elem any](s Slice) iter.Seq[Elem] {
 
 // Append appends the values from seq to the slice and returns the extended slice.
 func Append[Slice ~[]Elem, Elem any](x Slice, seq iter.Seq[Elem]) Slice {
-	for _, v := range seq {
+	for v := range seq {
 		x = append(x, v)
 	}
 	return x

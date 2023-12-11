@@ -26,7 +26,7 @@ func Count[I Addable](start, step I) iter.Seq[I] {
 func Cycle[Elem any](iterable iter.Seq[Elem]) iter.Seq[Elem] {
 	return func(yield func(Elem) bool) {
 		var saved []Elem
-		for _, e := range iterable {
+		for e := range iterable {
 			if !yield(e) {
 				return
 			}
