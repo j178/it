@@ -3,12 +3,78 @@
 package islices
 
 import (
+	"cmp"
+	"iter"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 
 	"github.com/j178/it"
 )
+
+func TestAll(t *testing.T) {
+	r := All([]int{1, 2, 3})
+	next, _ := iter.Pull2(r)
+	i, v, ok := next()
+	assert.Equal(t, 0, i)
+	assert.Equal(t, 1, v)
+	assert.True(t, ok)
+	i, v, ok = next()
+	assert.Equal(t, 1, i)
+	assert.Equal(t, 2, v)
+	assert.True(t, ok)
+	i, v, ok = next()
+	assert.Equal(t, 2, i)
+	assert.Equal(t, 3, v)
+	assert.True(t, ok)
+	i, v, ok = next()
+	assert.Equal(t, 0, i)
+	assert.Equal(t, 0, v)
+	assert.False(t, ok)
+}
+
+func TestBackward(t *testing.T) {
+	r := Backward([]int{1, 2, 3})
+	next, _ := iter.Pull2(r)
+	i, v, ok := next()
+	assert.Equal(t, 2, i)
+	assert.Equal(t, 3, v)
+	assert.True(t, ok)
+	i, v, ok = next()
+	assert.Equal(t, 1, i)
+	assert.Equal(t, 2, v)
+	assert.True(t, ok)
+	i, v, ok = next()
+	assert.Equal(t, 0, i)
+	assert.Equal(t, 1, v)
+	assert.True(t, ok)
+	i, v, ok = next()
+	assert.Equal(t, 0, i)
+	assert.Equal(t, 0, v)
+	assert.False(t, ok)
+}
+
+func TestValues(t *testing.T) {
+	r := Values([]int{1, 2, 3})
+	next, _ := iter.Pull(r)
+	v, ok := next()
+	assert.Equal(t, 1, v)
+	assert.True(t, ok)
+	v, ok = next()
+	assert.Equal(t, 2, v)
+	assert.True(t, ok)
+	v, ok = next()
+	assert.Equal(t, 3, v)
+	assert.True(t, ok)
+	v, ok = next()
+	assert.Equal(t, 0, v)
+	assert.False(t, ok)
+}
+
+func TestAppend(t *testing.T) {
+	r := Append([]int{1, 2, 3}, it.RangeByStep(4, 6, 1))
+	assert.Equal(t, []int{1, 2, 3, 4, 5}, r)
+}
 
 func TestCollect(t *testing.T) {
 	r := it.Range(10)
@@ -42,4 +108,16 @@ func TestCollect(t *testing.T) {
 		},
 	)
 	assert.Equal(t, []string{"hello", "world"}, s2)
+}
+
+func TestSorted(t *testing.T) {
+	r := it.RangeByStep(3, 0, -1)
+	s := Sorted(r)
+	assert.Equal(t, []int{1, 2, 3}, s)
+}
+
+func TestSortedFunc(t *testing.T) {
+	r := it.RangeByStep(3, 0, -1)
+	s := SortedFunc(r, func(a, b int) int { return cmp.Compare(a, b) })
+	assert.Equal(t, []int{1, 2, 3}, s)
 }

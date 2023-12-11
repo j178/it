@@ -2,6 +2,7 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/j178/it)](https://goreportcard.com/report/github.com/j178/it)
 [![CI](https://github.com/j178/it/actions/workflows/ci.yaml/badge.svg)](https://github.com/j178/it/actions/workflows/ci.yaml)
+[![codecov](https://codecov.io/gh/j178/it/graph/badge.svg?token=Q0G5O7DF3G)](https://codecov.io/gh/j178/it)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://makeapullrequest.com)
 
 Go1.22 will support [`range over function`](https://github.com/golang/go/issues/61405) and introduce the [`iter`](https://github.com/golang/go/issues/61897) std package.

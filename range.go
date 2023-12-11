@@ -13,7 +13,7 @@ func Range(end int) iter.Seq[int] {
 func RangeByStep(start, end, step int) iter.Seq[int] {
 	i := start
 	return func(yield func(v int) bool) {
-		for ; i < end; i += step {
+		for ; (step > 0 && i < end) || (step < 0 && i > end); i += step {
 			if !yield(i) {
 				break
 			}
