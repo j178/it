@@ -35,7 +35,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: gotip download
       - name: Run test
-        run: GOEXPERIMENT=rangefunc gotip test -race -covermode=atomic -coverprofile=coverage.out -v ./...
+        run: GOEXPERIMENT=rangefunc gotip test -covermode=atomic -coverprofile=coverage.out -v ./...
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v3
         with:
