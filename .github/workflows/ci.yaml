@@ -17,12 +17,12 @@ jobs:
       - name: Get tip commit
         id: tip
         run: |
-          mkdir -p ~/sdk/gotip
-          cd ~/sdk/gotip
-          git clone --origin=origin --depth=1 https://go.googlesource.com/go .
-          commit=$(git rev-parse origin/master)
+          commit=$(gh api repos/golang/go/commits/master --jq '.sha')
           echo "commit=$commit" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ github.token }}
       - name: Cache gotip
+        id: cache
         uses: actions/cache@v3
         with:
           path: ~/sdk/gotip
@@ -30,6 +30,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gotip-
       - name: Install gotip
+        if: steps.cache.outputs.cache-hit != 'true'
         run: |
           go install golang.org/dl/gotip@latest
           gotip download
