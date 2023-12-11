@@ -74,6 +74,7 @@ func Limit[V any](seq iter.Seq[V], n int) iter.Seq[V] {
 	}
 }
 
+// Skip returns an iterator over seq that skips the first n values.
 func Skip[V any](seq iter.Seq[V], n int) iter.Seq[V] {
 	return func(yield func(V) bool) {
 		for v := range seq {
