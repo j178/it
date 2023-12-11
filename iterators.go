@@ -10,17 +10,6 @@ type Addable interface {
 	constraints.Integer | constraints.Float
 }
 
-// Count returns an iterator that returns evenly spaced values starting with number start.
-func Count[I Addable](start, step I) iter.Seq[I] {
-	return func(yield func(I) bool) {
-		for i := start; ; i += step {
-			if !yield(i) {
-				break
-			}
-		}
-	}
-}
-
 // Cycle returns an iterator returning elements from the iterable and saving a copy of each.
 // When the iterable is exhausted, return elements from the saved copy. Repeats indefinitely.
 func Cycle[Elem any](iterable iter.Seq[Elem]) iter.Seq[Elem] {

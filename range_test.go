@@ -3,6 +3,7 @@
 package it
 
 import (
+	"iter"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -10,19 +11,20 @@ import (
 
 func TestNext(t *testing.T) {
 	r := Range(3)
-	v, ok := Next(r)
+	next, _ := iter.Pull(r)
+	v, ok := next()
 	assert.Equal(t, 0, v)
 	assert.True(t, ok)
 
-	v, ok = Next(r)
+	v, ok = next()
 	assert.Equal(t, 1, v)
 	assert.True(t, ok)
 
-	v, ok = Next(r)
+	v, ok = next()
 	assert.Equal(t, 2, v)
 	assert.True(t, ok)
 
-	v, ok = Next(r)
+	v, ok = next()
 	assert.Equal(t, 0, v)
 	assert.False(t, ok)
 }

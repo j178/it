@@ -50,7 +50,7 @@ func Last[T any](seq iter.Seq[T]) (T, bool) {
 
 // Count returns the number of elements in seq.
 func Count[T any](seq iter.Seq[T]) (cnt int) {
-	// X: for range seq 会编译出错
+	// `for range seq` cannot compile
 	for _ = range seq {
 		cnt++
 	}
