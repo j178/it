@@ -11,8 +11,21 @@ func Range(end int) iter.Seq[int] {
 
 // RangeByStep returns a sequence of integers from start to end (exclusive) by step.
 func RangeByStep(start, end, step int) iter.Seq[int] {
+	i := start
 	return func(yield func(v int) bool) {
-		for i := start; i < end; i += step {
+		for ; i < end; i += step {
+			if !yield(i) {
+				break
+			}
+		}
+	}
+}
+
+// RangeFrom returns a sequence of integers from start (inclusive) to infinity by step.
+func RangeFrom(start, step int) iter.Seq[int] {
+	i := start
+	return func(yield func(v int) bool) {
+		for ; ; i += step {
 			if !yield(i) {
 				break
 			}

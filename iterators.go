@@ -53,3 +53,16 @@ func Repeat[Elem any](e Elem, times int) iter.Seq[Elem] {
 		}
 	}
 }
+
+// Accumulate returns an iterator that returns accumulated sums.
+func Accumulate[Elem Addable](iterable iter.Seq[Elem]) iter.Seq[Elem] {
+	return func(yield func(Elem) bool) {
+		var sum Elem
+		for e := range iterable {
+			sum += e
+			if !yield(sum) {
+				break
+			}
+		}
+	}
+}
