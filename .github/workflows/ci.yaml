@@ -17,15 +17,15 @@ jobs:
       - name: Get tip commit
         id: tip
         run: |
-          mkdir -p $HOME/sdk/gotip
-          cd $HOME/sdk/gotip
+          mkdir -p ~/sdk/gotip
+          cd ~/sdk/gotip
           git clone --origin=origin --depth=1 https://go.googlesource.com/go .
           commit=$(git rev-parse origin/master)
           echo "commit=$commit" >> $GITHUB_OUTPUT
       - name: Cache gotip
         uses: actions/cache@v3
         with:
-          path: $HOME/sdk/gotip
+          path: ~/sdk/gotip
           key: ${{ runner.os }}-gotip-${{ steps.tip.outputs.commit }}
           restore-keys: |
             ${{ runner.os }}-gotip-
