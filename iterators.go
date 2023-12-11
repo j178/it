@@ -12,10 +12,10 @@ type Addable interface {
 
 // Cycle returns an iterator returning elements from the iterable and saving a copy of each.
 // When the iterable is exhausted, return elements from the saved copy. Repeats indefinitely.
-func Cycle[Elem any](iterable iter.Seq[Elem]) iter.Seq[Elem] {
+func Cycle[Elem any](seq iter.Seq[Elem]) iter.Seq[Elem] {
 	return func(yield func(Elem) bool) {
 		var saved []Elem
-		for e := range iterable {
+		for e := range seq {
 			if !yield(e) {
 				return
 			}
@@ -44,15 +44,48 @@ func Repeat[Elem any](e Elem, times int) iter.Seq[Elem] {
 }
 
 // Accumulate returns an iterator that returns accumulated sums.
-func Accumulate[Elem Addable](iterable iter.Seq[Elem]) iter.Seq[Elem] {
+func Accumulate[Elem Addable](seq iter.Seq[Elem]) iter.Seq[Elem] {
 	return func(yield func(Elem) bool) {
 		var sum Elem
-		for e := range iterable {
+		for e := range seq {
 			sum += e
 			if !yield(sum) {
 				break
 			}
 		}
+	}
+}
+
+// Limit returns an iterator over seq that stops after n values.
+func Limit[V any](seq iter.Seq[V], n int) iter.Seq[V] {
+	return func(yield func(V) bool) {
+		if n <= 0 {
+			return
+		}
+		for v := range seq {
+			if !yield(v) {
+				return
+			}
+			if n--; n <= 0 {
+				break
+			}
+		}
+		return
+	}
+}
+
+func Skip[V any](seq iter.Seq[V], n int) iter.Seq[V] {
+	return func(yield func(V) bool) {
+		for v := range seq {
+			if n <= 0 {
+				if !yield(v) {
+					return
+				}
+			} else {
+				n--
+			}
+		}
+		return
 	}
 }
 
@@ -103,18 +136,49 @@ func Zip[V1, V2 any](x iter.Seq[V1], y iter.Seq[V2]) iter.Seq[Zipped[V1, V2]] {
 	}
 }
 
-// Limit returns an iterator over seq that stops after n values.
-func Limit[V any](seq iter.Seq[V], n int) iter.Seq[V] {
-	return func(yield func(V) bool) {
-		if n <= 0 {
-			return
-		}
-		for v := range seq {
-			if !yield(v) {
+// Map returns an iterator over f applied to seq.
+func Map[In, Out any](f func(In) Out, seq iter.Seq[In]) iter.Seq[Out] {
+	return func(yield func(Out) bool) {
+		for in := range seq {
+			if !yield(f(in)) {
 				return
 			}
-			if n--; n <= 0 {
-				break
+		}
+		return
+	}
+}
+
+// Filter returns an iterator over seq that only includes
+// the values v for which f(v) is true.
+func Filter[V any](f func(V) bool, seq iter.Seq[V]) iter.Seq[V] {
+	return func(yield func(V) bool) {
+		for v := range seq {
+			if f(v) && !yield(v) {
+				return
+			}
+		}
+		return
+	}
+}
+
+// Equal reports whether the two sequences are equal.
+func Equal[V comparable](x, y iter.Seq[V]) bool {
+	for z := range Zip(x, y) {
+		if z.Ok1 != z.Ok2 || z.V1 != z.V2 {
+			return false
+		}
+	}
+	return true
+}
+
+// Concat returns an iterator over the concatenation of the sequences.
+func Concat[V any](seqs ...iter.Seq[V]) iter.Seq[V] {
+	return func(yield func(V) bool) {
+		for _, seq := range seqs {
+			for v := range seq {
+				if !yield(v) {
+					return
+				}
 			}
 		}
 		return
