@@ -19,6 +19,10 @@ func TestEnumerateByStep(t *testing.T) {
 	r := EnumerateByStep(Range(4), 1, 2)
 	s := Collect2(r)
 	assert.Equal(t, []Pair[int, int]{{1, 0}, {3, 1}, {5, 2}, {7, 3}}, s)
+
+	r = Limit2(EnumerateByStep(Range(4), 1, 2), 1)
+	s = Collect2(r)
+	assert.Equal(t, []Pair[int, int]{{1, 0}}, s)
 }
 
 func TestCycle(t *testing.T) {
@@ -42,6 +46,14 @@ func TestCycle(t *testing.T) {
 	v, ok = next()
 	assert.Equal(t, 2, v)
 	assert.True(t, ok)
+
+	r = Limit(Cycle(islices.Values([]int{1, 2})), 1)
+	s := islices.Collect(r)
+	assert.Equal(t, []int{1}, s)
+
+	r = Limit(Cycle(islices.Values([]int{1, 2})), 3)
+	s = islices.Collect(r)
+	assert.Equal(t, []int{1, 2, 1}, s)
 }
 
 func TestRepeat(t *testing.T) {
@@ -98,6 +110,10 @@ func TestAccumulate(t *testing.T) {
 	v, ok = next()
 	assert.Equal(t, 0, v)
 	assert.False(t, ok)
+
+	r = Limit(Accumulate(Range(4)), 2)
+	s := islices.Collect(r)
+	assert.Equal(t, []int{0, 1}, s)
 }
 
 func TestLimit(t *testing.T) {
@@ -112,6 +128,31 @@ func TestLimit(t *testing.T) {
 	v, ok = next()
 	assert.Equal(t, 0, v)
 	assert.False(t, ok)
+
+	r = Limit(Limit(Range(4), 2), 1)
+	s := islices.Collect(r)
+	assert.Equal(t, []int{0}, s)
+}
+
+func TestLimit2(t *testing.T) {
+	r := Limit2(Enumerate(Range(4)), 2)
+	next, _ := iter.Pull2(r)
+	i, v, ok := next()
+	assert.Equal(t, 0, i)
+	assert.Equal(t, 0, v)
+	assert.True(t, ok)
+	i, v, ok = next()
+	assert.Equal(t, 1, i)
+	assert.Equal(t, 1, v)
+	assert.True(t, ok)
+	i, v, ok = next()
+	assert.Equal(t, 0, i)
+	assert.Equal(t, 0, v)
+	assert.False(t, ok)
+
+	r = Limit2(Limit2(Enumerate(Range(4)), 2), 1)
+	s := Collect2(r)
+	assert.Equal(t, []Pair[int, int]{{0, 0}}, s)
 }
 
 func TestSkip(t *testing.T) {
@@ -126,6 +167,14 @@ func TestSkip(t *testing.T) {
 	v, ok = next()
 	assert.Equal(t, 0, v)
 	assert.False(t, ok)
+
+	r = Skip(Skip(Range(4), 2), 1)
+	s := islices.Collect(r)
+	assert.Equal(t, []int{3}, s)
+
+	r = Limit(Skip(Range(4), 2), 1)
+	s = islices.Collect(r)
+	assert.Equal(t, []int{2}, s)
 }
 
 func TestZip(t *testing.T) {
