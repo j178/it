@@ -54,3 +54,23 @@ func Count[T any](seq iter.Seq[T]) (cnt int) {
 	}
 	return cnt
 }
+
+// Contains returns true if seq contains v.
+func Contains[T comparable](seq iter.Seq[T], v T) bool {
+	for e := range seq {
+		if e == v {
+			return true
+		}
+	}
+	return false
+}
+
+// ContainsFunc returns true if seq contains an element that satisfies f.
+func ContainsFunc[T any](seq iter.Seq[T], f func(T) bool) bool {
+	for e := range seq {
+		if f(e) {
+			return true
+		}
+	}
+	return false
+}

@@ -81,6 +81,8 @@ func Accumulate[Elem Addable](seq iter.Seq[Elem]) iter.Seq[Elem] {
 	}
 }
 
+// TODO AccumulateFunc
+
 // Limit returns an iterator over seq that stops after n values.
 func Limit[V any](seq iter.Seq[V], n int) iter.Seq[V] {
 	return func(yield func(V) bool) {

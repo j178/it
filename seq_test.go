@@ -74,3 +74,15 @@ func TestCount(t *testing.T) {
 	r = Range(-1)
 	assert.Equal(t, 0, Count(r))
 }
+
+func TestContains(t *testing.T) {
+	assert.True(t, Contains(Range(4), 2))
+	assert.False(t, Contains(Range(4), 4))
+	assert.False(t, Contains(Range(4), 5))
+}
+
+func TestContainsFunc(t *testing.T) {
+	assert.True(t, ContainsFunc(Range(4), func(v int) bool { return v == 2 }))
+	assert.False(t, ContainsFunc(Range(4), func(v int) bool { return v == 4 }))
+	assert.False(t, ContainsFunc(Range(4), func(v int) bool { return v == 5 }))
+}
