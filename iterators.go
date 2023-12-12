@@ -54,12 +54,22 @@ func Cycle[Elem any](seq iter.Seq[Elem]) iter.Seq[Elem] {
 	}
 }
 
-// Repeat returns an iterator that returns object for the specified number of times.
-// If times < 0, Repeat runs indefinitely.
-func Repeat[Elem any](e Elem, times int) iter.Seq[Elem] {
+// Repeat returns an iterator that returns object indefinitely.
+func Repeat[Elem any](e Elem) iter.Seq[Elem] {
+	return func(yield func(Elem) bool) {
+		for {
+			if !yield(e) {
+				break
+			}
+		}
+	}
+}
+
+// RepeatN returns an iterator that returns object for the specified number of times.
+func RepeatN[Elem any](e Elem, n int) iter.Seq[Elem] {
 	i := 0
 	return func(yield func(Elem) bool) {
-		for ; times < 0 || i < times; i++ {
+		for ; i < n; i++ {
 			if !yield(e) {
 				i++
 				break

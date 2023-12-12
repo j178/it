@@ -5,6 +5,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"github.com/j178/it/islices"
 )
 
 func TestEnumerate(t *testing.T) {
@@ -43,7 +45,25 @@ func TestCycle(t *testing.T) {
 }
 
 func TestRepeat(t *testing.T) {
-	r := Repeat(1, 2)
+	r := Repeat(1)
+	next, _ := iter.Pull(r)
+	v, ok := next()
+	assert.Equal(t, 1, v)
+	assert.True(t, ok)
+	v, ok = next()
+	assert.Equal(t, 1, v)
+	assert.True(t, ok)
+	v, ok = next()
+	assert.Equal(t, 1, v)
+	assert.True(t, ok)
+
+	r = Limit(Repeat(1), 2)
+	s := islices.Collect(r)
+	assert.Equal(t, []int{1, 1}, s)
+}
+
+func TestRepeatN(t *testing.T) {
+	r := RepeatN(1, 2)
 	next, _ := iter.Pull(r)
 	v, ok := next()
 	assert.Equal(t, 1, v)
@@ -55,13 +75,9 @@ func TestRepeat(t *testing.T) {
 	assert.Equal(t, 0, v)
 	assert.False(t, ok)
 
-	r = Repeat(1, -1)
-	next, _ = iter.Pull(r)
-	for range 100 {
-		v, ok = next()
-		assert.Equal(t, 1, v)
-		assert.True(t, ok)
-	}
+	r = Limit(RepeatN(1, 100), 2)
+	s := islices.Collect(r)
+	assert.Equal(t, []int{1, 1}, s)
 }
 
 func TestAccumulate(t *testing.T) {
