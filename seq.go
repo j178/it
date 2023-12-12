@@ -63,26 +63,28 @@ func Count2[K any, V any](seq iter.Seq2[K, V]) (cnt int) {
 	return cnt
 }
 
-// Find returns the first element of seq that is equal to v.
-func Find[T comparable](seq iter.Seq[T], v T) (T, bool) {
+// Find returns the first index of v in seq, or -1 if v is not present.
+func Find[T comparable](seq iter.Seq[T], v T) int {
+	i := 0
 	for e := range seq {
 		if e == v {
-			return e, true
+			return i
 		}
+		i++
 	}
-	var result T
-	return result, false
+	return -1
 }
 
-// FindFunc returns the first element of seq that satisfies f.
-func FindFunc[T any](seq iter.Seq[T], f func(T) bool) (T, bool) {
+// FindFunc returns the first index of an element that satisfies f in seq, or -1 if no such element is present.
+func FindFunc[T any](seq iter.Seq[T], f func(T) bool) int {
+	i := 0
 	for e := range seq {
 		if f(e) {
-			return e, true
+			return i
 		}
+		i++
 	}
-	var result T
-	return result, false
+	return -1
 }
 
 // Contains returns true if seq contains v.
