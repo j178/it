@@ -63,6 +63,28 @@ func Count2[K any, V any](seq iter.Seq2[K, V]) (cnt int) {
 	return cnt
 }
 
+// Find returns the first element of seq that is equal to v.
+func Find[T comparable](seq iter.Seq[T], v T) (T, bool) {
+	for e := range seq {
+		if e == v {
+			return e, true
+		}
+	}
+	var result T
+	return result, false
+}
+
+// FindFunc returns the first element of seq that satisfies f.
+func FindFunc[T any](seq iter.Seq[T], f func(T) bool) (T, bool) {
+	for e := range seq {
+		if f(e) {
+			return e, true
+		}
+	}
+	var result T
+	return result, false
+}
+
 // Contains returns true if seq contains v.
 func Contains[T comparable](seq iter.Seq[T], v T) bool {
 	for e := range seq {
@@ -77,6 +99,33 @@ func Contains[T comparable](seq iter.Seq[T], v T) bool {
 func ContainsFunc[T any](seq iter.Seq[T], f func(T) bool) bool {
 	for e := range seq {
 		if f(e) {
+			return true
+		}
+	}
+	return false
+}
+
+// ForEach calls f for each element of seq.
+func ForEach[V any](seq iter.Seq[V], f func(V)) {
+	for v := range seq {
+		f(v)
+	}
+}
+
+// All returns true if all elements of seq satisfy f.
+func All[V any](seq iter.Seq[V], f func(V) bool) bool {
+	for v := range seq {
+		if !f(v) {
+			return false
+		}
+	}
+	return true
+}
+
+// Any returns true if any element of seq satisfies f.
+func Any[V any](seq iter.Seq[V], f func(V) bool) bool {
+	for v := range seq {
+		if f(v) {
 			return true
 		}
 	}

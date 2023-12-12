@@ -92,6 +92,19 @@ func Accumulate[Elem Addable](seq iter.Seq[Elem]) iter.Seq[Elem] {
 }
 
 // TODO AccumulateFunc
+// TODO TakeWhile
+// TODO DropWhile
+// TODO Compress
+// TODO GroupBy
+// TODO FilterFalse
+// TODO Starmap
+// TODO Tee
+// TODO Product
+// TODO Permutations
+// TODO Combinations
+// TODO CombinationsWithReplacement
+// TODO Chain
+// TODO ZipLongest
 
 // Limit returns an iterator over seq that stops after n values.
 func Limit[V any](seq iter.Seq[V], n int) iter.Seq[V] {
