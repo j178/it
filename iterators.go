@@ -112,6 +112,25 @@ func Limit[V any](seq iter.Seq[V], n int) iter.Seq[V] {
 	}
 }
 
+// Limit2 returns an iterator over seq that stops after n values.
+func Limit2[K any, V any](seq iter.Seq2[K, V], n int) iter.Seq2[K, V] {
+	return func(yield func(K, V) bool) {
+		if n <= 0 {
+			return
+		}
+		for k, v := range seq {
+			if !yield(k, v) {
+				n--
+				return
+			}
+			if n--; n <= 0 {
+				break
+			}
+		}
+		return
+	}
+}
+
 // Skip returns an iterator over seq that skips the first n values.
 func Skip[V any](seq iter.Seq[V], n int) iter.Seq[V] {
 	return func(yield func(V) bool) {

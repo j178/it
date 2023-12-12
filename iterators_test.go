@@ -11,13 +11,13 @@ import (
 
 func TestEnumerate(t *testing.T) {
 	r := Enumerate(Range(4))
-	s := Collect(r)
+	s := Collect2(r)
 	assert.Equal(t, []Pair[int, int]{{0, 0}, {1, 1}, {2, 2}, {3, 3}}, s)
 }
 
 func TestEnumerateByStep(t *testing.T) {
 	r := EnumerateByStep(Range(4), 1, 2)
-	s := Collect(r)
+	s := Collect2(r)
 	assert.Equal(t, []Pair[int, int]{{1, 0}, {3, 1}, {5, 2}, {7, 3}}, s)
 }
 

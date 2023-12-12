@@ -19,7 +19,7 @@ func R(stop int) iter.Seq2[int, int] {
 
 func TestCollect(t *testing.T) {
 	r := R(4)
-	assert.Equal(t, []Pair[int, int]{{0, 0}, {1, 1}, {2, 2}, {3, 3}}, Collect(r))
+	assert.Equal(t, []Pair[int, int]{{0, 0}, {1, 1}, {2, 2}, {3, 3}}, Collect2(r))
 }
 
 func TestNext(t *testing.T) {

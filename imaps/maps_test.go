@@ -13,7 +13,7 @@ import (
 
 func TestAll(t *testing.T) {
 	m := map[int]int{1: 1, 2: 2, 3: 3}
-	m1 := it.Collect(All(m))
+	m1 := it.Collect2(All(m))
 	slices.SortFunc(m1, func(a, b it.Pair[int, int]) int { return cmp.Compare(a.First, b.First) })
 	assert.Equal(t, []it.Pair[int, int]{{1, 1}, {2, 2}, {3, 3}}, m1)
 

@@ -29,6 +29,9 @@ func TestAll(t *testing.T) {
 	assert.Equal(t, 0, i)
 	assert.Equal(t, 0, v)
 	assert.False(t, ok)
+
+	r = it.Limit2(All([]int{1, 2, 3}), 1)
+	assert.Equal(t, []it.Pair[int, int]{{0, 1}}, it.Collect2(r))
 }
 
 func TestBackward(t *testing.T) {
@@ -50,6 +53,9 @@ func TestBackward(t *testing.T) {
 	assert.Equal(t, 0, i)
 	assert.Equal(t, 0, v)
 	assert.False(t, ok)
+
+	r = it.Limit2(Backward([]int{1, 2, 3}), 1)
+	assert.Equal(t, []it.Pair[int, int]{{2, 3}}, it.Collect2(r))
 }
 
 func TestValues(t *testing.T) {
@@ -67,6 +73,9 @@ func TestValues(t *testing.T) {
 	v, ok = next()
 	assert.Equal(t, 0, v)
 	assert.False(t, ok)
+
+	r = it.Limit(Values([]int{1, 2, 3}), 1)
+	assert.Equal(t, []int{1}, Collect(r))
 }
 
 func TestAppend(t *testing.T) {
