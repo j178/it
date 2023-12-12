@@ -17,10 +17,11 @@ func Enumerate[V any](seq iter.Seq[V]) iter.Seq2[int, V] {
 
 // EnumerateByStep returns an iterator that returns (start, seq[0]), (start+step, seq[1]), (start+2*step, seq[2]), ...
 func EnumerateByStep[V any](seq iter.Seq[V], start, step int) iter.Seq2[int, V] {
+	i := start
 	return func(yield func(int, V) bool) {
-		i := start
 		for v := range seq {
 			if !yield(i, v) {
+				i += step
 				return
 			}
 			i += step
@@ -31,20 +32,24 @@ func EnumerateByStep[V any](seq iter.Seq[V], start, step int) iter.Seq2[int, V] 
 // Cycle returns an iterator returning elements from the iterable and saving a copy of each.
 // When the iterable is exhausted, return elements from the saved copy. Repeats indefinitely.
 func Cycle[Elem any](seq iter.Seq[Elem]) iter.Seq[Elem] {
+	var (
+		saved []Elem
+		i     int
+	)
 	return func(yield func(Elem) bool) {
-		var saved []Elem
 		for e := range seq {
+			saved = append(saved, e)
 			if !yield(e) {
 				return
 			}
-			saved = append(saved, e)
 		}
 		for len(saved) > 0 {
-			for _, e := range saved {
-				if !yield(e) {
+			for ; i < len(saved); i++ {
+				if !yield(saved[i]) {
 					return
 				}
 			}
+			i = 0
 		}
 	}
 }
@@ -52,9 +57,11 @@ func Cycle[Elem any](seq iter.Seq[Elem]) iter.Seq[Elem] {
 // Repeat returns an iterator that returns object for the specified number of times.
 // If times < 0, Repeat runs indefinitely.
 func Repeat[Elem any](e Elem, times int) iter.Seq[Elem] {
+	i := 0
 	return func(yield func(Elem) bool) {
-		for i := 0; times < 0 || i < times; i++ {
+		for ; times < 0 || i < times; i++ {
 			if !yield(e) {
+				i++
 				break
 			}
 		}
@@ -63,8 +70,8 @@ func Repeat[Elem any](e Elem, times int) iter.Seq[Elem] {
 
 // Accumulate returns an iterator that returns accumulated sums.
 func Accumulate[Elem Addable](seq iter.Seq[Elem]) iter.Seq[Elem] {
+	var sum Elem
 	return func(yield func(Elem) bool) {
-		var sum Elem
 		for e := range seq {
 			sum += e
 			if !yield(sum) {
@@ -82,6 +89,7 @@ func Limit[V any](seq iter.Seq[V], n int) iter.Seq[V] {
 		}
 		for v := range seq {
 			if !yield(v) {
+				n--
 				return
 			}
 			if n--; n <= 0 {

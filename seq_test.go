@@ -44,6 +44,11 @@ func TestNth(t *testing.T) {
 	v, ok = Nth(r, 2)
 	assert.Equal(t, 4, v)
 	assert.True(t, ok)
+
+	r = Range(0)
+	v, ok = Nth(r, 2)
+	assert.Equal(t, 0, v)
+	assert.False(t, ok)
 }
 
 func TestLast(t *testing.T) {
