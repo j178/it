@@ -15,6 +15,7 @@ func RangeByStep(start, end, step int) iter.Seq[int] {
 	return func(yield func(v int) bool) {
 		for ; (step > 0 && i < end) || (step < 0 && i > end); i += step {
 			if !yield(i) {
+				i += step // proceed anyway
 				break
 			}
 		}
@@ -27,6 +28,7 @@ func RangeFrom(start, step int) iter.Seq[int] {
 	return func(yield func(v int) bool) {
 		for ; ; i += step {
 			if !yield(i) {
+				i += step // proceed anyway
 				break
 			}
 		}
