@@ -18,6 +18,8 @@ func Collect[K any, V any](seq iter.Seq2[K, V]) []Pair[K, V] {
 	return result
 }
 
+// TODO: figure out how this work
+
 // Next returns the first element of seq.
 func Next[T any](seq iter.Seq[T]) (T, bool) {
 	return Nth(seq, 0)

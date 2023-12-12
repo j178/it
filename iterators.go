@@ -10,6 +10,24 @@ type Addable interface {
 	constraints.Integer | constraints.Float
 }
 
+// Enumerate returns an iterator that returns (0, seq[0]), (1, seq[1]), (2, seq[2]), ...
+func Enumerate[V any](seq iter.Seq[V]) iter.Seq2[int, V] {
+	return EnumerateByStep(seq, 0, 1)
+}
+
+// EnumerateByStep returns an iterator that returns (start, seq[0]), (start+step, seq[1]), (start+2*step, seq[2]), ...
+func EnumerateByStep[V any](seq iter.Seq[V], start, step int) iter.Seq2[int, V] {
+	return func(yield func(int, V) bool) {
+		i := start
+		for v := range seq {
+			if !yield(i, v) {
+				return
+			}
+			i += step
+		}
+	}
+}
+
 // Cycle returns an iterator returning elements from the iterable and saving a copy of each.
 // When the iterable is exhausted, return elements from the saved copy. Repeats indefinitely.
 func Cycle[Elem any](seq iter.Seq[Elem]) iter.Seq[Elem] {
