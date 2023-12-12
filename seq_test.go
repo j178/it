@@ -75,6 +75,12 @@ func TestCount(t *testing.T) {
 	assert.Equal(t, 0, Count(r))
 }
 
+func TestCount2(t *testing.T) {
+	r := Enumerate(Range(10))
+	assert.Equal(t, 10, Count2(r))
+	assert.Equal(t, 0, Count2(r))
+}
+
 func TestContains(t *testing.T) {
 	assert.True(t, Contains(Range(4), 2))
 	assert.False(t, Contains(Range(4), 4))

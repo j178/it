@@ -55,6 +55,14 @@ func Count[T any](seq iter.Seq[T]) (cnt int) {
 	return cnt
 }
 
+// Count2 returns the number of elements in seq.
+func Count2[K any, V any](seq iter.Seq2[K, V]) (cnt int) {
+	for _, _ = range seq {
+		cnt++
+	}
+	return cnt
+}
+
 // Contains returns true if seq contains v.
 func Contains[T comparable](seq iter.Seq[T], v T) bool {
 	for e := range seq {

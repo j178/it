@@ -129,6 +129,9 @@ func TestLimit(t *testing.T) {
 	assert.Equal(t, 0, v)
 	assert.False(t, ok)
 
+	r = Limit(Range(4), 0)
+	assert.Equal(t, 0, Count(r))
+
 	r = Limit(Limit(Range(4), 2), 1)
 	s := islices.Collect(r)
 	assert.Equal(t, []int{0}, s)
@@ -149,6 +152,9 @@ func TestLimit2(t *testing.T) {
 	assert.Equal(t, 0, i)
 	assert.Equal(t, 0, v)
 	assert.False(t, ok)
+
+	r = Limit2(Enumerate(Range(10)), 0)
+	assert.Equal(t, 0, Count2(r))
 
 	r = Limit2(Limit2(Enumerate(Range(4)), 2), 1)
 	s := Collect2(r)
@@ -195,6 +201,10 @@ func TestZip(t *testing.T) {
 	v, ok = next()
 	assert.Equal(t, Zipped[int, int]{0, false, 0, false}, v)
 	assert.False(t, ok)
+
+	r = Zip(Range(1), Range(2))
+	s := islices.Collect(r)
+	assert.Equal(t, []Zipped[int, int]{{0, true, 0, true}, {0, false, 1, true}}, s)
 }
 
 func TestMap(t *testing.T) {
@@ -215,6 +225,10 @@ func TestMap(t *testing.T) {
 	v, ok = next()
 	assert.Equal(t, 0, v)
 	assert.False(t, ok)
+
+	r = Limit(Map(func(x int) int { return x * 2 }, Range(4)), 1)
+	s := islices.Collect(r)
+	assert.Equal(t, []int{0}, s)
 }
 
 func TestFilter(t *testing.T) {
@@ -229,6 +243,10 @@ func TestFilter(t *testing.T) {
 	v, ok = next()
 	assert.Equal(t, 0, v)
 	assert.False(t, ok)
+
+	r = Limit(Filter(func(x int) bool { return x%2 == 0 }, Range(4)), 1)
+	s := islices.Collect(r)
+	assert.Equal(t, []int{0}, s)
 }
 
 func TestEqual(t *testing.T) {
@@ -260,4 +278,8 @@ func TestConcat(t *testing.T) {
 	v, ok = next()
 	assert.Equal(t, 0, v)
 	assert.False(t, ok)
+
+	r = Limit(Concat(Range(2), Range(2)), 2)
+	s := islices.Collect(r)
+	assert.Equal(t, []int{0, 1}, s)
 }
