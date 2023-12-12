@@ -1,9 +1,10 @@
 # itertools for Go (1.22+)
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/j178/it)](https://goreportcard.com/report/github.com/j178/it)
-[![CI](https://github.com/j178/it/actions/workflows/ci.yaml/badge.svg)](https://github.com/j178/it/actions/workflows/ci.yaml)
-[![codecov](https://codecov.io/gh/j178/it/graph/badge.svg?token=Q0G5O7DF3G)](https://codecov.io/gh/j178/it)
+![Go Version](https://img.shields.io/badge/Go-%3E%3D%201.22-%23007d9c)
 [![Go Reference](https://pkg.go.dev/badge/github.com/j178/it.svg)](https://pkg.go.dev/github.com/j178/it)
+[![CI](https://github.com/j178/it/actions/workflows/ci.yaml/badge.svg)](https://github.com/j178/it/actions/workflows/ci.yaml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/j178/it)](https://goreportcard.com/report/github.com/j178/it)
+[![codecov](https://codecov.io/gh/j178/it/graph/badge.svg?token=Q0G5O7DF3G)](https://codecov.io/gh/j178/it)
 
 Go1.22 will support [`range over function`](https://github.com/golang/go/issues/61405) and introduce the [`iter`](https://github.com/golang/go/issues/61897) std package.
 (Behind the `GOEXPERIMENT=rangefunc` gate.)
