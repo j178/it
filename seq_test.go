@@ -81,38 +81,6 @@ func TestCount2(t *testing.T) {
 	assert.Equal(t, 0, Count2(r))
 }
 
-func TestFind(t *testing.T) {
-	r := Range(4)
-	i := Find(r, 2)
-	assert.Equal(t, 2, i)
-
-	r = Range(4)
-	i = Find(r, 4)
-	assert.Equal(t, -1, i)
-}
-
-func TestFindFunc(t *testing.T) {
-	r := Range(4)
-	i := FindFunc(r, func(v int) bool { return v == 2 })
-	assert.Equal(t, 2, i)
-
-	r = Range(4)
-	i = FindFunc(r, func(v int) bool { return v == 4 })
-	assert.Equal(t, -1, i)
-}
-
-func TestContains(t *testing.T) {
-	assert.True(t, Contains(Range(4), 2))
-	assert.False(t, Contains(Range(4), 4))
-	assert.False(t, Contains(Range(4), 5))
-}
-
-func TestContainsFunc(t *testing.T) {
-	assert.True(t, ContainsFunc(Range(4), func(v int) bool { return v == 2 }))
-	assert.False(t, ContainsFunc(Range(4), func(v int) bool { return v == 4 }))
-	assert.False(t, ContainsFunc(Range(4), func(v int) bool { return v == 5 }))
-}
-
 func TestForEach(t *testing.T) {
 	r := Range(4)
 	tot := 0
