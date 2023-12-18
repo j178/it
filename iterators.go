@@ -6,10 +6,6 @@ import (
 	"golang.org/x/exp/constraints"
 )
 
-type Addable interface {
-	constraints.Integer | constraints.Float
-}
-
 // Enumerate returns an iterator that returns (0, seq[0]), (1, seq[1]), (2, seq[2]), ...
 func Enumerate[V any](seq iter.Seq[V]) iter.Seq2[int, V] {
 	return EnumerateByStep(seq, 0, 1)
@@ -79,7 +75,7 @@ func RepeatN[Elem any](e Elem, n int) iter.Seq[Elem] {
 }
 
 // Accumulate returns an iterator that returns accumulated sums.
-func Accumulate[Elem Addable](seq iter.Seq[Elem]) iter.Seq[Elem] {
+func Accumulate[Elem constraints.Integer | constraints.Float](seq iter.Seq[Elem]) iter.Seq[Elem] {
 	var sum Elem
 	return func(yield func(Elem) bool) {
 		for e := range seq {

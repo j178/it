@@ -1,16 +1,21 @@
 package it
 
-import "iter"
+import (
+	"iter"
 
-// Range returns a sequence of integers from 0 to end (exclusive).
+	"golang.org/x/exp/constraints"
+)
+
+// Range returns a sequence of integers from 0 (inclusive) to end (exclusive).
 func Range(end int) iter.Seq[int] {
 	return RangeByStep(0, end, 1)
 }
 
-// RangeByStep returns a sequence of integers from start to end (exclusive) by step.
-func RangeByStep(start, end, step int) iter.Seq[int] {
+// RangeByStep returns a sequence of integers from start (inclusive) to end (exclusive) by step.
+// If step is zero, the sequence will be empty.
+func RangeByStep[T constraints.Integer | constraints.Float](start, end, step T) iter.Seq[T] {
 	i := start
-	return func(yield func(v int) bool) {
+	return func(yield func(v T) bool) {
 		for ; (step > 0 && i < end) || (step < 0 && i > end); i += step {
 			if !yield(i) {
 				i += step // proceed anyway
@@ -21,14 +26,19 @@ func RangeByStep(start, end, step int) iter.Seq[int] {
 }
 
 // RangeFrom returns a sequence of integers from start (inclusive) to infinity by step.
-func RangeFrom(start, step int) iter.Seq[int] {
+// If step is zero, the sequence will be empty.
+func RangeFrom[T constraints.Integer | constraints.Float](start, step T) iter.Seq[T] {
 	i := start
-	return func(yield func(v int) bool) {
-		for ; ; i += step {
+	return func(yield func(v T) bool) {
+		if step == 0 {
+			return
+		}
+		for {
 			if !yield(i) {
 				i += step // proceed anyway
 				break
 			}
+			i += step
 		}
 	}
 }
